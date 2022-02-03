@@ -1,15 +1,14 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
+title: "Toronto motor vehicle collisions can be reduced by installing more red cameras"
+subtitle: "Toronto motor vehicle collisions can be reduced by installing more red cameras"
 author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
+  - Alicia Yang
+thanks: "Code and data are available at: https://github.com/Alicia-y/Telling-stories-with-data."
 date: "`r format(Sys.time(), '%d %B %Y')`"
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "Vehicle collisions occur constantly in big citys. They sometimes could be severe issues when resulting in damage in public and personal properties, injuries, or even death. This report aims to investigate the motor vehicle collisions in Toronto that result in injuries or deaths from 2006 to 2020. By exploring the trend of these traffic collisions in respect of number and location, I find that .... Implies that ... The data used in this report is obtained from the City of Toronto Open Data Portal, and ."
 output:
   bookdown::pdf_document2
-toc: FALSE
+toc: TRUE
 bibliography: references.bib
 ---
 
@@ -17,18 +16,72 @@ bibliography: references.bib
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
+library(janitor)
 library(palmerpenguins)
 ```
 
+\newpage
+
 # Introduction
+
+As one of the busiest and most modern city in Canada, Toronto constantly faces a large number of citizens, and, inevitably, heavy traffic. The road condition in Toronto is busy most of the time. The vast majority of roads and buildings under construction that take place almost everywhere narrow the roadway of vehicles and turn off traffic lights. Heavy traffic is definitely one of the main reasons behind car accidents, because it increases road rage and encourage the vehicle drivers to make dangerous moves to save time. Vehicle collisions have always brought large financial costs to the involving parties, and even more, they even brought injuries and deaths.
+
+The Motor Vehicle Collisions data of Toronto provides a record of the past severe vehicle collisions in Toronto, and with the help of statistical data analysis, it can possibly offer insights on the ways to reduce this type of accident. This report investigates the motor vehicle collisions in Toronto from 2006 to 2020, with a focus on the ones result in injuries or deaths. In Section \@ref(data), the Motor Vehicle Collisions dataset is introduced and organized to visualize and explain the change in the annual number of accidents, and the frequency of the accidents by district and by type.
+
+However, numbers of annual motor vehicle collisions demonstrate a generally descending trend from 2006 to 2020.
 
 You can and should cross-reference sections and sub-sections. For instance, Section \@ref(data). R Markdown automatically makes the sections lower case and adds a dash to spaces to generate labels, for instance, Section \@ref(first-discussion-point). 
 
 
 
 # Data
+To investigate the motor vehicle collisions in Toronto, I obtained the dataset "Motor Vehicle Collisions involving Killed or Seriously Injured Persons" from the Toronto Open Data Portal. Provided by the Toronto Police Service, this dataset included all vehicle collisions occurred in Toronto between 2006 and 2020 that result in injuries or deaths.
 
-Our data is of penguins (Figure \@ref(fig:bills)).
+```{r, echo=FALSE}
+vehicle_collision <- read_csv(here::here("inputs/data/vehicle_collisions.csv")) %>%
+  clean_names()
+```
+
+
+Show an extract of the cleaned dataset (Table \@ref(tab:dataextract))
+
+```{r dataextract}
+library(knitr)
+vehicle_collision <- read_csv(here::here("inputs/data/vehicle_collisions.csv")) %>%
+  clean_names()
+vehicle_collision %>%
+  select(year, street1, street2, accloc, neighbourhood) %>%
+  slice(1:10) %>%
+  kable(
+    caption = "Extracting the first ten rows from the Motor Vehicle Collisions data",
+col.names=c("Year", "Street1", "Street2", "Collision location", "Neighbourhood"),
+linesep = "", digits = 1, booktabs=TRUE)
+
+```
+Table \@ref(tab:dataextract) shows
+
+
+```{r fig.cap = "Comparing the number of traffic collisions each year from 2006 to 2020"}
+ggplot(mapping = aes(x = year), data=vehicle_collision) +
+  geom_bar()
+```
+
+
+Data cleaning
+```{r}
+vehicle_collision <- vehicle_collision %>%
+  drop_na(street1) %>%
+  drop_na(street2) %>%
+  drop_na(accloc) %>%
+  drop_na(neighbourhood)
+```
+
+
+```{r fig.cap = "Comparing the location of traffic collisions each year from 2006 to 2020"}
+ggplot(mapping = aes(x = year, fill=accloc), data=vehicle_collision) +
+  geom_bar()
+```
+
 
 ```{r bills, fig.cap="Bills of penguins", echo = FALSE}
 ggplot(penguins, aes(x = island, fill = species)) +
@@ -103,5 +156,10 @@ Weaknesses and next steps should also be included.
 
 
 # References
+
+Yihui Xie (2021). knitr: A General-Purpose Package for Dynamic Report Generation in R. R
+  package version 1.37.
+
+https://newcanadianlife.com/why-does-toronto-have-so-much-traffic/
 
 

@@ -18,7 +18,23 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r cars}
-summary(cars)
+library(tidyverse)
+library(janitor)
+a <- data1 %>%
+  clean_names()
+b <- data2 %>%
+  clean_names()
+year_2020 <- a %>%
+  filter(year == 2020) %>%
+  drop_na(street1) %>%
+  drop_na(street2)
+year_2020_location <- tibble(year_2020$year, year_2020$street1, year_2020$street2)
+```
+
+
+```{r}
+camera <- b %>%
+  filter(year >= 2020)
 ```
 
 ## Including Plots
