@@ -1,11 +1,11 @@
 ---
-title: "Toronto motor vehicle collisions can be reduced by installing more red cameras"
-subtitle: "Toronto motor vehicle collisions can be reduced by installing more red cameras"
+title: "Investigating the motor vehicle collisions in Toronto"
+subtitle: "Installing more red light cameras do not stop traffic accidents from happening"
 author: 
   - Alicia Yang
 thanks: "Code and data are available at: https://github.com/Alicia-y/Telling-stories-with-data."
 date: "`r format(Sys.time(), '%d %B %Y')`"
-abstract: "Vehicle collisions occur constantly in big citys. They sometimes could be severe issues when resulting in damage in public and personal properties, injuries, or even death. This report aims to investigate the motor vehicle collisions in Toronto that result in injuries or deaths from 2006 to 2020. By exploring the trend of these traffic collisions in respect of number and location, I find that .... Implies that ... The data used in this report is obtained from the City of Toronto Open Data Portal, and ."
+abstract: "Vehicle collisions occur constantly in big citys. They sometimes could be severe issues when resulting in damage in public and personal properties, injuries, or even death. This report aims to investigate the motor vehicle collisions in Toronto that result in injuries or deaths from 2006 to 2020. By exploring the trend of these traffic collisions in respect of number and location, I find that the total number of accidents has a descending trend. However, the vehicle collisions taking place at intersections has not been reduced despite that more red light cameras are installed. The data used in this report is obtained from the City of Toronto Open Data Portal."
 output:
   bookdown::pdf_document2
 toc: TRUE
@@ -24,7 +24,7 @@ library(palmerpenguins)
 
 # Introduction
 
-As one of the busiest and most modern city in Canada, Toronto constantly faces a large number of citizens, and, inevitably, heavy traffic. The road condition in Toronto is busy most of the time. The vast majority of roads and buildings under construction that take place almost everywhere narrow the roadway of vehicles and turn off traffic lights. Heavy traffic is likely to be one of the main reasons behind car accidents, because it increases the road rage and encourages the vehicle drivers to make dangerous moves to save time. Vehicle collisions have always brought large financial costs to the involving parties, and even more, they even brought injuries and deaths.
+As one of the busiest and most modern city in Canada, Toronto constantly faces a large number of citizens, and, inevitably, heavy traffic. The road condition in Toronto is busy most of the time. The vast majority of roads and buildings under construction that take place almost everywhere narrow the roadway of vehicles and turn off traffic lights. Heavy traffic is likely to be one of the main reasons behind car accidents, because it increases the road rage and encourages the vehicle drivers to make dangerous moves to save time. Vehicle collisions have always brought large financial costs to the involving parties, and even more, they even brought injuries and deaths. In just 2019, traffic accidents resulted in more than 1700 deaths and more than 140000 injuries.
 
 The Motor Vehicle Collisions data of Toronto provides a record of the past severe vehicle collisions in Toronto which result in injuries or deaths, and with the help of statistical data analysis, it can possibly offer insights on the ways to reduce this type of accident. This report investigates the motor vehicle collisions in Toronto from 2006 to 2020, with a focus on the ones result in injuries or deaths. In Section \@ref(data), the Motor Vehicle Collisions dataset is introduced and organized to visualize the change in the annual number of accidents, as well as comparing the frequency of the accidents by district, accident type, and level of injury. Then, I discussed about the possible implications of these visualizations.
 
@@ -35,12 +35,14 @@ You can and should cross-reference sections and sub-sections. For instance, Sect
 
 
 # Data
-To investigate the motor vehicle collisions in Toronto, I obtained the dataset "Motor Vehicle Collisions involving Killed or Seriously Injured Persons" from the Toronto Open Data Portal. Provided by the Toronto Police Service, this dataset includes all vehicle collisions occurred in Toronto between 2006 and 2020 that result in injuries or deaths. It contains 16840 observations of collisions and 54 variables with all kinds of information of each collision. This report focuses on six of these variables which are: year, accident location, district, street1(of the collision occurred), street2(of the collision occurred), and classification of accident. By using R packages "tidyverse" [@citetidyverse], "janitor" [@citejanitor], "kableExtra" [@citekableExtra] and "knitr" (Yihui Xie 2021), an extract of the cleaned dataset (Table \@ref(tab:dataextract)) is shown below.
+## Motor Vehicle Collisions involving Killed or Seriously Injured Persons
+To investigate the motor vehicle collisions in Toronto, I obtained the dataset "Motor Vehicle Collisions involving Killed or Seriously Injured Persons" from the Toronto Open Data Portal. Provided by the Toronto Police Service, this dataset includes all vehicle collisions occurred in Toronto between 2006 and 2020 that result in injuries or deaths. It contains 16840 observations of collisions and 54 variables with all kinds of information of each collision. This report focuses on six of these variables which are: year, accident location, district, street1(of the collision occurred), street2(of the collision occurred), and classification of accident. By using R packages "tidyverse" [@citetidyverse], "janitor" [@citejanitor], "kableExtra" [@citekableExtra] and "knitr" [@citeknitr], an extract of the cleaned dataset (Table \@ref(tab:dataextract)) is shown below.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-vehicle_collision <- read_csv(here::here("Telling-stories-with-data/inputs/data/vehicle_collisions.csv")) %>%
+vehicle_collision <- read_csv(here::here("inputs/data/vehicle_collisions.csv")) %>%
   clean_names() %>%
-  drop_na(year)
+  drop_na(year) %>%
+  filter(acclass != "Property Damage Only")
 ```
 
 ```{r dataextract, echo=FALSE, message=FALSE}
@@ -56,25 +58,81 @@ col.names=c("Year", "Street1", "Street2", "Collision location", "District", "Cla
 
 "),
 linesep = "", digits = 1, booktabs=TRUE) %>%
-  kable_styling(latex_options = "HOLD_position")
+  kable_styling(latex_options = "HOLD_position", font_size = 7)
+
 
 ```
+
 
 Table \@ref(tab:dataextract) shows the first ten rows of the Motor Vehicle Collisions data. Variable "Year" indicates the year in which the accident occurs. Variables "Street1" and "Street2" provides the name of the street where the accident takes place. Variable "District" indicates its district. Variable "Collision location" includes 8 types: at intersection, intersection related, at/near private drive, laneway, non intersection, overpass or bridge, trail, and underpass or tunnel. Variable "Classification of Accident" involves fatal and non-fatal injury.
 
 I'm interested in finding the trend of motor vehicle collisions from 2006 to 2020 and the types of injuries they result in. It reveals the traffic control in Toronto, and possibly the quality and knowledge of vehicle owners throughout these years.
 
-```{r fig.cap = "Comparing the number of traffic collisions each year from 2006 to 2020", fig.width=5.4,fig.height=3.6, echo=FALSE}
+```{r fig.cap = "Comparing the number of traffic collisions each year from 2006 to 2020", fig.width=8,fig.height=3.4, echo=FALSE}
 ggplot(mapping = aes(x = year, fill = acclass), data=vehicle_collision) +
-  geom_bar()+theme_light()+ylab("number of motor vehicle collisions involving injuries or deaths")+scale_fill_discrete(name = "Classification of Accident")
+  geom_bar()+theme_light()+ylab("number of motor vehicle collisions")+scale_fill_discrete(name = "Classification of Accident")+facet_wrap(~acclass)
 ```
-Figure 1 shows a descending pattern for the number of car accidents involving injuries or deaths as the number went from 1483 cases in 2006 to 633 cases in 2020. By looking at the accident types,  Indicate that it's likely that Toronto has done a better job on traffic control in general. However, if other factors are taken into considerations, the trend of motor 
 
+Figure 1 shows a descending pattern for the number of car accidents involving non-fatal injuries from year 2006 to 2020. The number of fatal accidents does not increase nor decrease much. In general, the number vehicle collisions in Toronto has largely decrease, indicating that when combining this two factors(number and classification of accident), Toronto has done a better job on traffic control in general. I'm also interested in the trend of motor vehicle collisions if other factors are taken into considerations. 
+\newpage
 
-```{r fig.cap = "Comparing the location of traffic collisions each year from 2006 to 2020"}
-ggplot(mapping = aes(x = year, fill=accloc), data=vehicle_collision) +
+```{r fig.cap = "Comparing the location of traffic collisions each year from 2006 to 2020", echo=FALSE, fig.width=6,fig.height=3.4}
+ggplot(mapping = aes(x = year, fill=accloc), data=vehicle_collision)+scale_fill_discrete(name = "Accident location")+ylab("number of motor vehicle collisions")+theme_light()+
   geom_bar()
 ```
+
+Figure 2 illustrates the where these vehicle collisions usually take place from 2006 to 2020. Before 2013, half of the data doesn't come with accident location, which is understandable because back in the days there wasn't an easy approach to record and save the data, so they often got lost. A large proportion of the accidents take place either at intersections or is intersection related. The other seven accident locations types add up to less than half of all vehicle collisions. At intersections, a lot more rule breaking behaviors can be committed by drivers such as ignoring stop signs or traffic lights, some drivers even claimed that they rarely yielded. These behaviors would result in collisions with other vehicles and the pedestrians.
+
+Motor vehicle collisions are most likely to take place at intersections. If we could measures are taken to restrict the driver's rule breaking behaviors at intersections, the numbers of car accidents would drop a lot in general. Red light camera is supposed to be a measure taken by the government to monitor the vehicles at intersections. I will look into whether it's effective or not in respect of preventing traffic accidents from happening.
+
+
+## Red Light Cameras
+The number of red light camera instilled in Toronto from 2007 to 2020 is obtained from the dataset "Red Light Cameras" found in the Toronto Open Data Portal. This dataset is shared by the Transportation Services and it covers the locations of red light cameras in Toronto. In its introduction, this dataset claims that red light cameras can improve the safety of the drivers and pedestrians by monitoring the behavior of the drivers.
+```{r message=FALSE, warning=FALSE}
+red_light_camera <- read_csv(here::here("inputs/data/red_light_cameras.csv")) %>%
+  clean_names() %>%
+  select(activation_date, district) %>%
+  drop_na(activation_date) %>%
+  drop_na(district)
+red_light_camera$year <- vector("numeric", length = 199)
+for (i in 1:199){
+  red_light_camera$year[i]=format(as.Date(red_light_camera$activation_date[i], format="%Y/%m/%d"),"%Y")
+}
+red_light_camera <- red_light_camera %>%
+  filter(year != 2021)
+cumulative <-tibble(
+  year=c(2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020),
+  sum=c(0, 2, 6, 15, 16, 17, 17, 17, 17, 17, 17, 31, 33, 33, 34, 0, 0, 7, 17, 18, 18, 18, 18, 18, 18, 18, 42, 43, 44, 44, 0, 3, 10, 18, 19, 19, 19, 19, 19, 19, 19, 26, 27, 28, 28, 0, 1, 9, 15, 15, 15, 15, 15, 15, 15, 15, 36, 38, 41, 41),
+  district=c("Toronto and East York", "Toronto and East York", "Toronto and East York", "Toronto and East York", "Toronto and East York", "Toronto and East York", "Toronto and East York", "Toronto and East York", "Toronto and East York", "Toronto and East York", "Toronto and East York", "Toronto and East York", "Toronto and East York", "Toronto and East York", "Toronto and East York", "Scarborough", "Scarborough", "Scarborough", "Scarborough", "Scarborough", "Scarborough", "Scarborough", "Scarborough", "Scarborough", "Scarborough", "Scarborough", "Scarborough", "Scarborough", "Scarborough", "Scarborough", "North York", "North York", "North York", "North York", "North York", "North York", "North York", "North York", "North York", "North York", "North York", "North York", "North York", "North York", "North York", "Etobicoke York", "Etobicoke York", "Etobicoke York", "Etobicoke York", "Etobicoke York", "Etobicoke York", "Etobicoke York", "Etobicoke York", "Etobicoke York", "Etobicoke York", "Etobicoke York", "Etobicoke York", "Etobicoke York", "Etobicoke York", "Etobicoke York")
+)
+ggplot( aes(x=year, y=sum, group=district, color=district), data=cumulative) +
+    geom_line()
+```
+
+
+```{r}
+co <- vehicle_collision %>%
+  filter(accloc == "At Intersection" | accloc == "Intersection Related") %>%
+  drop_na(district)
+for(i in 1:9039){
+  if(co$district[i] == "Toronto East York"){
+    co$district[i] = "Toronto and East York"
+  }
+}
+ggplot(data=co,aes(x=year, fill=acclass))+geom_bar()+facet_wrap(~district)
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ```{r bills, fig.cap="Bills of penguins", echo = FALSE}
@@ -151,8 +209,7 @@ Weaknesses and next steps should also be included.
 
 # References
 
-Yihui Xie (2021). knitr: A General-Purpose Package for Dynamic Report Generation in R. R
-  package version 1.37.
+https://tc.canada.ca/en/road-transportation/statistics-data/canadian-motor-vehicle-traffic-collision-statistics-2019
 
 https://newcanadianlife.com/why-does-toronto-have-so-much-traffic/
 
