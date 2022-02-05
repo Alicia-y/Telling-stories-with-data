@@ -21,6 +21,7 @@ library(dplyr)
 
 # get package
 package <- show_package("0b6d3a00-7de1-440b-b47c-7252fd13929f")
+
 package
 
 # get all resources for this package
@@ -51,25 +52,8 @@ write_csv(
 
 write_csv(
   x = data2,
-  file = "Telling-stories-with-data/inputs/data/red_light_cameras.csv"
+  file = "Telling-stories-with-data/inputs/data/red_light_camera.csv"
 )
-
-# Read in the raw data. 
-raw_data <- readr::read_csv("inputs/data/raw_data.csv"
-                     )
-# Just keep some variables that may be of interest (change 
-# this depending on your interests)
-names(raw_data)
-
-reduced_data <- 
-  raw_data %>% 
-  select(first_col, 
-         second_col)
-rm(raw_data)
-         
-
-#### What's next? ####
-
 
 
          
