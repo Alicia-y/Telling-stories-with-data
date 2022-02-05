@@ -4,7 +4,7 @@ author:
   - Alicia Yang
 thanks: "Code and data are available at: https://github.com/Alicia-y/Telling-stories-with-data."
 date: "`r format(Sys.time(), '%d %B %Y')`"
-abstract: "Vehicle collisions occur constantly in big citys. They sometimes could be severe issues when resulting in damage in public and personal properties, injuries, or even death. This report aims to investigate motor vehicle collisions in Toronto that result in injuries or deaths from 2006 to 2020. By exploring the trend of these traffic collisions in respect of their frequency, fatality, and location, I find that the total number of accidents has a descending trend. However, the number of vehicle collisions that occurred at intersections has not reduced despite the fact that more red light cameras are installed. This finding suggests that ... furthur measures should be taken to enhance the safety issue on road."
+abstract: "Vehicle collisions occur constantly in Toronto and sometimes could be severe when resulting in damage in public and personal properties, injuries, or even death. This report aims to investigate motor vehicle collisions in Toronto that result in injuries or deaths from 2006 to 2020. By exploring the trend of these traffic collisions in respect of their frequency, fatality, and location, I find that the total number of accidents has a descending trend. However, the number of vehicle collisions that occurred at intersections has not reduced despite the fact that more red light cameras are installed. This finding suggests that unlike, ...... doesn't prevent traffic accidents at intersection, furthur measures should be taken to enhance the safety issue on road."
 output:
   bookdown::pdf_document2
 toc: TRUE
@@ -22,7 +22,7 @@ library(janitor)
 
 # Introduction
 
-As one of the busiest and most modern city in Canada, Toronto constantly faces a large number of citizens, and, inevitably, heavy traffic. The road condition in Toronto is busy most of the time. The vast majority of roads and buildings under construction that take place almost everywhere narrow the roadway of vehicles and turn off traffic lights. Heavy traffic is likely to be one of the main reasons behind car accidents, because it increases the road rage and encourages the vehicle drivers to make dangerous moves to save time. Vehicle collisions have always brought large financial costs to the involving parties, and even more, they even brought injuries and deaths. In just 2019, traffic accidents resulted in more than 1700 deaths and more than 140000 injuries.
+As one of the busiest and most modern city in Canada, Toronto constantly faces a large number of citizens, and, inevitably, heavy traffic. The road condition in Toronto is busy most of the time. The vast majority of roads and buildings under construction that take place almost everywhere narrow the roadway of vehicles and turn off traffic lights. Heavy traffic is likely to be one of the main reasons behind car accidents, because it increases the road rage and encourages the vehicle drivers to make dangerous moves to save time. Vehicle collisions have always brought large financial costs to the involving parties, and even more, they even brought injuries and deaths. In just 2019, traffic accidents resulted in more than 1700 deaths and more than 140000 injuries [@cite1].
 
 The Motor Vehicle Collisions data of Toronto provides a record of the past severe vehicle collisions in Toronto which result in injuries or deaths, and with the help of statistical data analysis, it can possibly offer insights on the ways to reduce this type of accident. This report investigates the motor vehicle collisions in Toronto from 2006 to 2020, with a focus on the ones result in injuries or deaths. In Section \@ref(data), the Motor Vehicle Collisions dataset is introduced and organized to visualize the change in the annual number of traffic accidents with respect to their fatality and their location. Then, I discussed about the possible implications of these visualizations. By Figure 2, I concluded that motor vehicle collisions are always more likely to occur at intersections. Thus, 
 Continuing 
@@ -156,19 +156,18 @@ ggplot(data=co,aes(x=year, fill=acclass))+geom_bar()+facet_wrap(~district)+ylab(
 
 Figure 4 shows the number of annual motor vehicle accidents occurred at or near intersections in each district. For all the districts, the numbers of fatal vehicle collisions stay approximately the same throughout these years, with Scarborough having the highest mortality rate in general. With regards to the total number of accidents, data in Etobicoke York, North York, and Scarborough all has its fluctuations, but the number remains about the same. The number of vehicle collisions in Toronto and East York was the highest in 2006, with more than to 260 cases, but it is the only district where the number has dropped.
 
-By comparing Figure 3 and Figure 4, I found that they haven't show any associations between the number of traffic accidents and the number of red light cameras installed.
+By comparing Figure 3 and Figure 4, I found that they haven't show any associations between the number of traffic accidents and the number of red light cameras installed. For instance, Scarborough has installed the most number of red light cameras, especially after the year of 2016, but its number of traffic accidents didn't reduced at all, it even reach its peak in 2018, nor did the fatality of those accidents. We see a large decrease in Toronto and East York's motor vehicle collisions, but it didn't installed at much red cameras as Etobicoke York or Scarborough.
 
 # Discussion
 
-## First discussion point
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+No relationships
+No increase non decrease
 
-## Second discussion point
 
 ## Third discussion point
 
-## Weaknesses and next steps
+## Limitations
 
 Weaknesses and next steps should also be included.
 
@@ -186,8 +185,6 @@ Weaknesses and next steps should also be included.
 
 
 # References
-
-https://tc.canada.ca/en/road-transportation/statistics-data/canadian-motor-vehicle-traffic-collision-statistics-2019
 
 https://newcanadianlife.com/why-does-toronto-have-so-much-traffic/
 
