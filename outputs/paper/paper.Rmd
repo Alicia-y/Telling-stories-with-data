@@ -4,7 +4,7 @@ author:
   - Alicia Yang
 thanks: "Code and data are available at: https://github.com/Alicia-y/Telling-stories-with-data."
 date: "`r format(Sys.time(), '%d %B %Y')`"
-abstract: "Vehicle collisions occur constantly in Toronto and sometimes could be severe when resulting in damage in public and personal properties, injuries, or even death. This report aims to investigate motor vehicle collisions in Toronto that result in injuries or deaths from 2006 to 2020. By exploring the trend of these traffic collisions in respect of their frequency, fatality, and location, I find that the total number of accidents has a descending trend. However, the number of vehicle collisions that occurred at intersections has not reduced despite the fact that more red light cameras are installed. This finding suggests that unlike, ...... doesn't prevent traffic accidents at intersection, furthur measures should be taken to enhance the safety issue on road."
+abstract: "Vehicle collisions occur constantly in Toronto and sometimes could be severe when resulting in damage in public and personal properties, injuries, or even death. This report aims to investigate motor vehicle collisions in Toronto that result in injuries or deaths from 2006 to 2020. By exploring the trend of these traffic collisions in respect of their frequency, fatality, and location, I find that the total number of accidents has a descending trend. However, the number of vehicle collisions that occurred at intersections has not been reduced despite the fact that more red light cameras are installed. This finding suggests that unlike the claimed purpose of this electronic monitor, red light camera doesn't prevent serious traffic accidents from happening at intersection, and furthur measures should be taken to enhance the safety issue on road."
 output:
   bookdown::pdf_document2
 toc: TRUE
@@ -22,7 +22,7 @@ library(janitor)
 
 # Introduction
 
-As one of the busiest and most modern city in Canada, Toronto constantly faces a large number of citizens, and, inevitably, heavy traffic. The road condition in Toronto is busy most of the time. The vast majority of roads and buildings under construction that take place almost everywhere narrow the roadway of vehicles and turn off traffic lights. Heavy traffic is likely to be one of the main reasons behind car accidents, because it increases the road rage and encourages the vehicle drivers to make dangerous moves to save time. Vehicle collisions have always brought large financial costs to the involving parties, and even more, they even brought injuries and deaths. In just 2019, traffic accidents resulted in more than 1700 deaths and more than 140000 injuries [@cite1].
+As one of the busiest and most modern city in Canada, Toronto constantly faces a large number of citizens, and, inevitably, heavy traffic. The road condition in Toronto is busy most of the time. The vast majority of roads and buildings under construction that take place almost everywhere narrow the roadway of vehicles and turn off traffic lights [@cite4]. Heavy traffic is likely to be one of the main reasons behind car accidents, because it increases the road rage and encourages the vehicle drivers to make dangerous moves to save time. Vehicle collisions have always brought large financial costs to the involving parties, and even more, they even brought injuries and deaths. In just 2019, traffic accidents resulted in more than 1700 deaths and more than 140000 injuries [@cite1].
 
 The Motor Vehicle Collisions data of Toronto provides a record of the past severe vehicle collisions in Toronto which result in injuries or deaths, and with the help of statistical data analysis, it can possibly offer insights on the ways to reduce this type of accident. This report investigates the motor vehicle collisions in Toronto from 2006 to 2020, with a focus on the ones result in injuries or deaths. In Section \@ref(data), the Motor Vehicle Collisions dataset is introduced and organized to visualize the change in the annual number of traffic accidents with respect to their fatality and their location. Then, I discussed about the possible implications of these visualizations. By Figure 2, I concluded that motor vehicle collisions are always more likely to occur at intersections. Thus, 
 Continuing 
@@ -35,7 +35,7 @@ You can and should cross-reference sections and sub-sections. For instance, Sect
 ## Motor Vehicle Collisions involving Killed or Seriously Injured Persons
 To investigate the motor vehicle collisions in Toronto, I obtained the dataset "Motor Vehicle Collisions involving Killed or Seriously Injured Persons" from the Toronto Open Data Portal [@citedata]. Provided by the Toronto Police Service, this dataset includes all vehicle collisions occurred in Toronto between 2006 and 2020 that result in injuries or deaths. One bias aroused by this dataset is the offset from the real accident location. For ethical reason and the protection of the parties involved in the accidents that are considered to be criminal cases, the location of those criminal accidents are offset to the closest intersection node [@citecollisiondata]. As a result, the location of those accidents specific to neighborhoods might not be accurate. Therefore, I will use the variable district instead of neighbourhood to categorize the accidents later in the report to avoid this bias.
 
-This dataset contains 16840 observations of collisions and 54 variables with all kinds of information of each collision. This report focuses on four of these variables which are: year, accident location, district, and fatality. By using R packages "tidyverse" [@citetidyverse], "janitor" [@citejanitor], "kableExtra" [@citekableExtra] and "knitr" [@citeknitr], an extract of the cleaned dataset (Table \@ref(tab:dataextract)) is shown below.
+This dataset contains 16840 observations of collisions and 54 variables with all kinds of information of each collision. This report focuses on four of these variables which are: year, accident location, district, and fatality. By using R [@citeR], and R packages "tidyverse" [@citetidyverse], "janitor" [@citejanitor], "kableExtra" [@citekableExtra] and "knitr" [@citeknitr], an extract of the cleaned dataset (Table \@ref(tab:dataextract)) is shown below.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 # Load motor vehicle collision data and clean
@@ -88,7 +88,7 @@ Motor vehicle collisions are most likely to take place at intersections. Thus, i
 
 
 ## Red Light Cameras
-The number of red light camera instilled in Toronto from 2007 to 2020 is obtained from the dataset "Red Light Cameras" found in the Toronto Open Data Portal [@citedata]. This dataset is shared by the Transportation Services and it covers the locations of red light cameras in Toronto. In its introduction, this dataset claims that red light cameras can improve the safety of the drivers and pedestrians by monitoring the behavior of the drivers [@citecameradata]. It contains 199 observations and 32 variables. This dataset's downside is that it is missing values in lots of its variables. To reduce errors generated from this downside, I will only utilize the variables with no missing values. R packages "tidyverse" [@citetidyverse], "janitor" [@citejanitor], "kableExtra" [@citekableExtra] and "knitr" [@citeknitr] are usedt to produce an extract of the cleaned dataset (Table \@ref(tab:dadaextract1)).
+The number of red light camera instilled in Toronto from 2007 to 2020 is obtained from the dataset "Red Light Cameras" found in the Toronto Open Data Portal [@citedata]. This dataset is shared by the Transportation Services and it covers the locations of red light cameras in Toronto. In its introduction, this dataset claims that red light cameras can improve the safety of the drivers and pedestrians by monitoring the behavior of the drivers [@citecameradata]. It contains 199 observations and 32 variables. This dataset's downside is that it is missing values in lots of its variables. To reduce errors generated from this downside, I will only utilize the variables with no missing values. R [@citeR], R packages "tidyverse" [@citetidyverse], "janitor" [@citejanitor], "kableExtra" [@citekableExtra] and "knitr" [@citeknitr] are used to produce an extract of the cleaned dataset (Table \@ref(tab:dadaextract1)).
 
 ```{r dadaextract1, message=FALSE, warning=FALSE, echo=FALSE}
 # Load red light camera data and clean
@@ -135,7 +135,7 @@ ggplot( aes(x=year, y=sum, group=district, color=district), data=cumulative) +
     geom_line()+ylab("number of red light cameras")+theme_light()
 ```
 
-Figure 3 demonstrates the total number of red light cameras in each district from 2006 to 2020. Scarborough installed the most red light cameras in this period of time, especially after 2016, a large number of red light cameras were installed there. The district of North York, on the contrary, started with the most red light cameras installed among all districts, but has the slowest growth and ended up with the least number of red light cameras in 2020 among all districts.
+Figure 3 demonstrates the total number of red light cameras in each district from 2006 to 2020. Scarborough installed the most red light cameras in this period of time, especially after 2016, a large number of red light cameras were installed there. The district of North York, on the contrary, started with the most red light cameras installed among all districts, but has the slowest growth and ended up with the least number of red light cameras in 2020 among all districts. All the four districts installed a large number of red light cameras from 2016 to 2017.
 
 I wanted to see how the increase in number of red light cameras compare with the traffic collision's frequency in each district. So, I selected the accidents that occurred at intersections or somewhere near intersections from the Motor Vehicle Collision dataset and created a ggplot to see their trend by each district in Toronto.
 
@@ -159,34 +159,13 @@ Figure 4 shows the number of annual motor vehicle accidents occurred at or near 
 By comparing Figure 3 and Figure 4, I found that they haven't show any associations between the number of traffic accidents and the number of red light cameras installed. For instance, Scarborough has installed the most number of red light cameras, especially after the year of 2016, but its number of traffic accidents didn't reduced at all, it even reach its peak in 2018, nor did the fatality of those accidents. We see a large decrease in Toronto and East York's motor vehicle collisions, but it didn't installed at much red cameras as Etobicoke York or Scarborough.
 
 # Discussion
+The analysis of the two datasets show no relationship between the cases of motor vehicle collisions in Toronto and the number of red light cameras. From the comparision between Figure 3 and Figure 4, we see that in none of the districts did the number of vehicle collisions followed the trend of the installations of the red light cameras. For stance, between 2016 and 2017, all four districts made the installations of lots of new red light cameras, but none of the data in Figure 4 seemed to reflect that action. The implication of Section \@ref(data) is that: installing more red cameras does not change the number of traffic accidents in Toronto, nor does it influence the fatality of the accidents. A very likely reason to explain this situation is that red light cameras only concerned the drivers who already followed the rule most of the time, but not the rule-breaking drivers. Another possible reason would be that at intersections with red light cameras, more drivers would intend to stop rather than to proceed when they see the light is about to turn red, resulting in a higher chance of rear end accidents [@cite2]. 
 
-
-No relationships
-No increase non decrease
-
-
-## Third discussion point
-
-## Limitations
-
-Weaknesses and next steps should also be included.
-
-\newpage
-
-\appendix
-
-# Appendix {-}
-
-
-# Additional details
-
+In recent years, complaints have been raised about whether red light cameras are used mainly to prevent injuries and deaths from traffic accidents or earn revenues for the government [@cite3]. Measures should be taken to improve the effectiveness of this system and to ensure the safety of drivers and pedestrians who are the victims of the vehicle accidents. For instance, drivers should be more notified on the existence of red light cameras, instead of knowing them after they are fined, because red light cameras is supposed to prevent accidents but not to punish people after they cause accidents. Government could also seek for other solutions to reduce these accidents. Toronto and East York has done a great job reducing the number of motor vehicle collisions, which means other district could adopt similar traffic controls and see how it works in a few years.
 
 \newpage
 
 
 # References
 
-https://newcanadianlife.com/why-does-toronto-have-so-much-traffic/
-
-https://www.scientificamerican.com/article/red-light-cameras-may-not-make-streets-safer/
 
