@@ -11,7 +11,6 @@
 
 #### Workspace setup ####
 # Use R Projects, not setwd().
-library(haven)
 library(tidyverse)
 library(opendatatoronto)
 library(dplyr)
@@ -27,16 +26,17 @@ data1 <-
 # get package
 package2 <- show_package("9fcff3e1-3737-43cf-b410-05acd615e27b")
 
-
 data2 <-
   list_package_resources("9fcff3e1-3737-43cf-b410-05acd615e27b") %>%
   get_resource()
 
+# Import motor vehicle collisions data
 write_csv(
   x = data1,
   file = "Telling-stories-with-data/inputs/data/vehicle_collisions.csv"
 )
 
+# Import red light cameras data
 write_csv(
   x = data2,
   file = "Telling-stories-with-data/inputs/data/red_light_camera.csv"
